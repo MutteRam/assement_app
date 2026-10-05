@@ -2,57 +2,231 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Python Assessment</title>
+    <title>Kivexa | Python Assessment</title>
 
     <style>
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
+            background: #070b14;
+            color: white;
         }
 
-        .home {
-            min-height: 100vh;
+        /* Navbar */
+
+        .navbar {
+            height: 65px;
+            padding: 0 7%;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #38bdf8;
+        }
+
+        /* Hero */
+
+        .hero {
+            min-height: 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            padding: 40px 20px;
         }
 
-        .box {
-            background: white;
-            padding: 50px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        .hero-content {
+            max-width: 800px;
         }
 
-        h1 {
-            margin-bottom: 25px;
+        .badge {
+            display: inline-block;
+            padding: 7px 15px;
+            margin-bottom: 18px;
+            border: 1px solid #2563eb;
+            border-radius: 30px;
+            color: #38bdf8;
+            font-size: 13px;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+            line-height: 1.05;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.5;
+            max-width: 650px;
+            margin: auto;
         }
 
         .start-btn {
             display: inline-block;
-            padding: 13px 25px;
-            background: #2563eb;
+            margin-top: 28px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
             color: white;
             text-decoration: none;
-            border-radius: 7px;
+            border-radius: 9px;
             font-weight: bold;
+            transition: 0.3s;
         }
 
         .start-btn:hover {
-            background: #1d4ed8;
+            transform: translateY(-3px);
+        }
+
+        /* Features */
+
+        .features {
+            max-width: 1000px;
+            margin: auto;
+            padding: 35px 20px 60px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 14px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card:hover {
+            border-color: #2563eb;
+        }
+
+        .card-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* How it works */
+
+        .how {
+            text-align: center;
+            padding: 50px 20px;
+            border-top: 1px solid #1e293b;
+        }
+
+        .how h2 {
+            font-size: 32px;
+            margin-bottom: 25px;
+        }
+
+        .steps {
+            max-width: 800px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .step {
+            color: #cbd5e1;
+        }
+
+        .number {
+            width: 42px;
+            height: 42px;
+            margin: auto auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #2563eb;
+            font-weight: bold;
+        }
+
+        .step p {
+            margin-top: 6px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* Footer */
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            border-top: 1px solid #1e293b;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 700px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .features,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
         }
 
     </style>
@@ -61,26 +235,155 @@
 
 <body>
 
-    <div class="home">
 
-        <div class="box">
+<!-- Navbar -->
 
-            <h1>
-                Python Programming Assessment
-            </h1>
+<nav class="navbar">
+
+    <div class="logo">
+        code<span>ing</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How It Works</a>
+    </div>
+
+</nav>
+
+
+<!-- Hero -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            🐍 Python Programming Assessment
+        </div>
+
+        <h1>
+            Test Your <span>Python Skills</span>
+        </h1>
+
+        <p>
+            Solve real-world Python programming problems,
+            write your code, run test cases and get instant results.
+        </p>
+
+        <a href="{% url 'assessment' %}" class="start-btn">
+            🚀 Start Assessment
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- Features -->
+
+<section class="features" id="features">
+
+    <div class="card">
+
+        <div class="card-icon">🧠</div>
+
+        <h3>Real-World Problems</h3>
+
+        <p>
+            Practice Python with practical programming scenarios.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-icon">🧪</div>
+
+        <h3>Test Cases</h3>
+
+        <p>
+            Test your code with visible and hidden test cases.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-icon">⚡</div>
+
+        <h3>Instant Results</h3>
+
+        <p>
+            Run your solution and see the result immediately.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- How It Works -->
+
+<section class="how" id="how">
+
+    <h2>How It Works</h2>
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="number">1</div>
+
+            <strong>Start</strong>
 
             <p>
-                Test your Python programming skills
+                Begin your assessment.
             </p>
 
-            <a href="{% url 'assessment' %}"
-               class="start-btn">
-                Start Assessment
-            </a>
+        </div>
+
+
+        <div class="step">
+
+            <div class="number">2</div>
+
+            <strong>Code</strong>
+
+            <p>
+                Solve the Python problem.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="number">3</div>
+
+            <strong>Submit</strong>
+
+            <p>
+                Run and submit your solution.
+            </p>
 
         </div>
 
     </div>
+
+</section>
+
+
+<!-- Footer -->
+
+<footer>
+
+    © 2026 Kivexa | Python Programming Assessment
+
+</footer>
+
 
 </body>
 
