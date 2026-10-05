@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Kivexa | Assessment</title>
+
+    <style>
+        *{box-sizing:border-box}
+        body{margin:0;font-family:Arial;background:#f4f6fb;color:#172033}
+        header{background:#111827;color:#fff;padding:15px 6%;display:flex;justify-content:space-between}
+        .brand{font-size:22px;font-weight:bold}.brand span{color:#60a5fa}
+        main{max-width:1050px;margin:20px auto;padding:0 15px}
+        .hero,.card{background:#fff;border-radius:14px;box-shadow:0 5px 18px #0000000d}
+        .hero{background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;padding:20px;margin-bottom:15px}
+        .hero h1{margin:0 0 5px;font-size:24px}.hero p{margin:0;font-size:13px}
+        .card{margin-bottom:20px;overflow:hidden}
+        .head{padding:16px 20px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:10px}
+        .num{font-size:11px;color:#2563eb;font-weight:bold}.title{font-size:20px;font-weight:bold;margin-top:3px}
+        .badge{padding:5px 9px;border-radius:15px;font-size:11px;font-weight:bold;background:#eff6ff;color:#2563eb;height:max-content}
+        .content{padding:18px 20px}
+        .desc{font-size:14px;line-height:1.55;color:#475569;margin-bottom:12px}
+        .label{font-size:12px;font-weight:bold;color:#64748b;margin:8px 0 5px}
+        pre{margin:0;white-space:pre-wrap}
+        .starter{background:#111827;color:#e5e7eb;padding:11px;border-radius:8px;font:13px Consolas;margin-bottom:13px}
+        .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+        .box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:9px;padding:11px}
+        .box h4{margin:0 0 7px;font-size:13px}
+        .example{background:#fff;border:1px solid #e5e7eb;border-radius:7px;padding:7px;margin:5px 0;font-size:12px}
+        .example pre{font:12px Consolas;margin-top:3px}
+        .hint{background:#fffbeb;border-left:3px solid #f59e0b;padding:6px 8px;margin:4px 0;font-size:12px;border-radius:4px}
+        .solution{background:#eff6ff;border:1px solid #dbeafe;padding:10px;border-radius:9px;font-size:12px;line-height:1.5;margin-bottom:12px}
+        .editor{background:#0f172a;padding:13px;border-radius:11px}
+        .editor-top{color:#e2e8f0;font-size:12px;font-weight:bold;margin-bottom:7px;display:flex;justify-content:space-between}
+        textarea{width:100%;resize:vertical;outline:0;border:1px solid #334155;border-radius:7px;background:#020617;color:#e2e8f0;padding:11px;font:13px Consolas}
+        textarea:focus{border-color:#60a5fa}
+        .code{min-height:220px}.input{min-height:65px}
+        .buttons{display:flex;gap:7px;margin-top:8px}
+        button{border:0;border-radius:7px;padding:9px 15px;color:#fff;font-weight:bold;cursor:pointer}
+        .run{background:#2563eb}.submit{background:#16a34a}
+        .output{margin-top:10px;background:#020617;color:#86efac;border:1px solid #334155;border-radius:7px;padding:10px;min-height:45px;font:12px Consolas;white-space:pre-wrap}
+        @media(max-width:650px){.head{flex-direction:column}.grid{grid-template-columns:1fr}.buttons{flex-direction:column}button{width:100%}header{padding:14px 5%}}
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">Kivexa<span>.</span></div>
+    <div>Python Assessment</div>
+</header>
+
+<main>
+
+    <div class="hero">
+        <h1>Python Coding Assessment</h1>
+        <p>Solve real-world programming problems and test your Python skills.</p>
+    </div>
+
+    {% for question in questions %}
+
+    <div class="card">
+
+        <div class="head">
+            <div>
+                <div class="num">QUESTION {{ forloop.counter }}</div>
+                <div class="title">{{ question.title }}</div>
+            </div>
+
+            <span class="badge">
+                {{ question.difficulty }} · {{ question.topic }}
+            </span>
+        </div>
+
+        <div class="content">
+
+            <div class="desc">
+                {{ question.description|linebreaksbr }}
+            </div>
+
+            {% if question.starter_code %}
+            <div class="label">Starter Code</div>
+            <pre class="starter">{{ question.starter_code }}</pre>
+            {% endif %}
+
+
+            <div class="grid">
+
+                <!-- ONLY FIRST 2 NON-HIDDEN TEST CASES -->
+                {% if question.visible_examples %}
+                <div class="box">
+                    <h4>📌 Examples</h4>
+
+                    {% for test in question.visible_examples %}
+                    <div class="example">
+                        <b>Example {{ forloop.counter }}</b>
+                        <pre>Input:
+                    {{ test.input_data }}</pre>
+                        <pre>Output:
+                    {{ test.expected_output }}</pre>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+
+                <!-- HINTS -->
+                <div class="box">
+                    <h4>💡 Hints</h4>
+
+                    {% if question.hint_1 %}<div class="hint"><b>1.</b> {{ question.hint_1 }}</div>{% endif %}
+                    {% if question.hint_2 %}<div class="hint"><b>2.</b> {{ question.hint_2 }}</div>{% endif %}
+                    {% if question.hint_3 %}<div class="hint"><b>3.</b> {{ question.hint_3 }}</div>{% endif %}
+                    {% if question.hint_4 %}<div class="hint"><b>4.</b> {{ question.hint_4 }}</div>{% endif %}
+                    {% if question.hint_5 %}<div class="hint"><b>5.</b> {{ question.hint_5 }}</div>{% endif %}
+                </div>
+
+            </div>
+
+
+            {% if question.explanation %}
+            <div class="solution">
+                <b>🧠 How to Solve</b><br>
+                {{ question.explanation|linebreaksbr }}
+            </div>
+            {% endif %}
+
+
+            <!-- CODE EDITOR -->
+
+            <div class="editor">
+
+                <div class="editor-top">
+                    <span>Write Your Python Code</span>
+                    <span>Python 3</span>
+                </div>
+
+                <textarea
+                    class="code"
+                    id="code-{{ question.id }}"
+                    spellcheck="false"
+                    placeholder="Write your Python code here..."
+                >{{ question.starter_code }}</textarea>
+
+
+                <div class="label" style="color:#cbd5e1">
+                    Test Input
+                </div>
+
+                <textarea
+                    class="input"
+                    id="input-{{ question.id }}"
+                    placeholder="Enter test input..."
+                ></textarea>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="run"
+                        data-question-id="{{ question.id }}"
+                        onclick="runCode(this)">
+                        ▶ Run Code
+                    </button>
+
+                    <button
+                        type="button"
+                        class="submit"
+                        data-question-id="{{ question.id }}"
+                        onclick="submitCode(this)">
+                        ✓ Submit
+                    </button>
+
+                </div>
+
+
+                <div class="label" style="color:#cbd5e1">
+                    Output
+                </div>
+
+                <pre
+                    class="output"
+                    id="output-{{ question.id }}"
+                >Run your code to see the output.</pre>
+
+            </div>
+
+        </div>
+    </div>
+
+    {% empty %}
+
+    <div class="card">
+        <div class="content">
+            No assessment questions available.
+        </div>
+    </div>
+
+    {% endfor %}
+
+</main>
+
+
+<script>
+
+function runCode(button) {
+    const id = button.dataset.questionId;
+    const code = document.getElementById("code-" + id).value;
+    const output = document.getElementById("output-" + id);
+
+    if (!code.trim()) {
+        output.textContent = "Please write Python code first.";
+        return;
+    }
+
+    output.textContent = "Running...";
+
+    const formData = new FormData();
+    formData.append("code", code);
+    formData.append("question_id", id);
+
+    fetch("/assessment/run-code/", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        if (data.error) {
+            output.textContent = "❌ " + data.error;
+            return;
+        }
+
+        let resultText = "";
+
+        data.results.forEach((result, index) => {
+
+            resultText += "Test Case " + (index + 1) + "\n";
+
+            if (result.hidden) {
+
+                resultText +=
+                    "🔒 Hidden Test Case\n" +
+                    "Status: " +
+                    (result.passed ? "✅ PASS" : "❌ FAIL") +
+                    "\n\n";
+
+            } else {
+
+                resultText +=
+                    "Input:\n" +
+                    result.input + "\n\n" +
+
+                    "Expected Output:\n" +
+                    result.expected + "\n\n" +
+
+                    "Your Output:\n" +
+                    result.output + "\n\n" +
+
+                    "Status: " +
+                    (result.passed ? "✅ PASS" : "❌ FAIL") +
+                    "\n\n";
+            }
+        });
+
+        resultText += "-------------------------\n";
+
+        if (data.correct) {
+            resultText += "Overall Result:\n";
+            resultText += "✅ Correct — All test cases passed!";
+        } else {
+            resultText += "Overall Result:\n";
+            resultText += "❌ Wrong — Some test cases failed.";
+        }
+
+        output.textContent = resultText;
+    })
+    .catch(error => {
+        output.textContent = "❌ " + error.message;
+    });
+}
+</script>
+
+</html>
