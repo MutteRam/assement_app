@@ -14,6 +14,7 @@ class CodingQuestion(models.Model):
     hint_2 = models.TextField(blank=True)
     hint_3 = models.TextField(blank=True)
     explanation = models.TextField(blank=True)
+    case_sensitive = models.BooleanField(default=False)   
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
