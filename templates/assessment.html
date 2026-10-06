@@ -552,277 +552,143 @@
 
 </main>
 
-
 <script>
-
 let currentQuestion = 0;
 
-
-/* GET ALL QUESTIONS */
-
-const questionCards =
-    document.querySelectorAll(".question-card");
-
-
-/* SHOW ONLY FIRST QUESTION */
+const questionCards = document.querySelectorAll(".question-card");
 
 questionCards.forEach(function(card, index) {
-
     if (index !== 0) {
         card.style.display = "none";
     }
-
 });
 
-
-/* UPDATE NEXT BUTTON */
-
 function updateNextButton() {
-
-    const buttons =
-        document.querySelectorAll(".next");
+    const buttons = document.querySelectorAll(".next");
 
     buttons.forEach(function(button) {
-
-        button.disabled =
-            currentQuestion === questionCards.length - 1;
+        button.disabled = currentQuestion === questionCards.length - 1;
 
         if (button.disabled) {
             button.textContent = "No More Questions";
         } else {
             button.textContent = "Next Question →";
         }
-
     });
-
 }
 
-
-/* NEXT QUESTION */
-
 function nextQuestion() {
-
-    /* If there are no questions */
-
     if (questionCards.length === 0) {
         return;
     }
-
-
-    /* If already at last question */
 
     if (currentQuestion >= questionCards.length - 1) {
         return;
     }
 
-
-    /* Hide current question */
-
     questionCards[currentQuestion].style.display = "none";
-
-
-    /* Move to next question */
-
     currentQuestion++;
 
-
-    /* Show next question */
-
     questionCards[currentQuestion].style.display = "block";
-
-
-    /* Scroll to top */
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
 
-
     updateNextButton();
-
 }
-
-
-/* INITIAL BUTTON STATE */
 
 updateNextButton();
 
-
-
 /* RUN CODE */
-
 function runCode(button) {
-
-    const id =
-        button.dataset.questionId;
-
-    const code =
-        document.getElementById("code-" + id).value;
-
-    const output =
-        document.getElementById("output-" + id);
-
+    const id = button.dataset.questionId;
+    const code = document.getElementById("code-" + id).value;
+    const output = document.getElementById("output-" + id);
 
     if (!code.trim()) {
-
-        output.textContent =
-            "Please write Python code first.";
-
+        output.textContent = "Please write Python code first.";
         return;
     }
 
+    output.textContent = "Running...";
 
-    output.textContent =
-        "Running...";
+    const formData = new FormData();
+    formData.append("code", code);
+    formData.append("question_id", id);
 
-
-    const formData =
-        new FormData();
-
-    formData.append(
-        "code",
-        code
-    );
-
-    formData.append(
-        "question_id",
-        id
-    );
-
-
-    fetch(
-        "/assessment/run-code/",
-        {
-            method: "POST",
-
-            body: formData,
-
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}"
-            }
+    fetch("/assessment/run-code/", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
         }
-    )
-
-    .then(function(response) {
-
-        return response.json();
-
     })
-
+    .then(function(response) {
+        return response.json();
+    })
     .then(function(data) {
-
         if (data.error) {
-
-            output.textContent =
-                "❌ " + data.error;
-
+            output.textContent = "❌ " + data.error;
             return;
         }
 
-
         let resultText = "";
 
+        data.results.forEach(function(result, index) {
+            resultText += "Test Case " + (index + 1) + "\n";
 
-        data.results.forEach(
-            function(result, index) {
-
+            if (result.hidden) {
                 resultText +=
-                    "Test Case " +
-                    (index + 1) +
-                    "\n";
-
-
-                if (result.hidden) {
-
-                    resultText +=
-                        "🔒 Hidden Test Case\n" +
-                        "Status: " +
-                        (
-                            result.passed
-                                ? "✅ PASS"
-                                : "❌ FAIL"
-                        ) +
-                        "\n\n";
-
-                } else {
-
-                    resultText +=
-                        "Input:\n" +
-                        result.input +
-                        "\n\n" +
-
-                        "Expected Output:\n" +
-                        result.expected +
-                        "\n\n" +
-
-                        "Your Output:\n" +
-                        result.output +
-                        "\n\n" +
-
-                        "Status: " +
-                        (
-                            result.passed
-                                ? "✅ PASS"
-                                : "❌ FAIL"
-                        ) +
-                        "\n\n";
-                }
-
+                    "🔒 Hidden Test Case\n\n" +
+                    "Expected Output:\n" +
+                    result.expected + "\n\n" +
+                    "Your Output:\n" +
+                    result.output + "\n\n" +
+                    "Status: " +
+                    (result.passed ? "✅ PASS" : "❌ FAIL") +
+                    "\n\n";
+            } else {
+                resultText +=
+                    "Input:\n" +
+                    result.input + "\n\n" +
+                    "Expected Output:\n" +
+                    result.expected + "\n\n" +
+                    "Your Output:\n" +
+                    result.output + "\n\n" +
+                    "Status: " +
+                    (result.passed ? "✅ PASS" : "❌ FAIL") +
+                    "\n\n";
             }
-        );
+        });
 
-
-        resultText +=
-            "-------------------------\n";
-
+        resultText += "-------------------------\n";
 
         if (data.correct) {
-
             resultText +=
                 "Overall Result:\n" +
                 "✅ Correct — All test cases passed!";
-
         } else {
-
             resultText +=
                 "Overall Result:\n" +
                 "❌ Wrong — Some test cases failed.";
-
         }
 
-
-        output.textContent =
-            resultText;
-
+        output.textContent = resultText;
     })
-
     .catch(function(error) {
-
-        output.textContent =
-            "❌ " + error.message;
-
+        output.textContent = "❌ " + error.message;
     });
-
 }
 
-
-/* SUBMIT PLACEHOLDER */
-
+/* SUBMIT */
 function submitCode(button) {
+    const id = button.dataset.questionId;
+    const output = document.getElementById("output-" + id);
 
-    const id =
-        button.dataset.questionId;
-
-    const output =
-        document.getElementById("output-" + id);
-
-    output.textContent =
-        "Submit functionality coming soon.";
-
+    output.textContent = "Submit functionality coming soon.";
 }
-
 </script>
-
 </body>
 </html>
