@@ -1,6 +1,32 @@
 import requests
 
 
+import requests
+
+
+def normalize_output(text):
+    if text is None:
+        return ""
+
+    text = str(text)
+
+    # Convert Windows line endings to normal newline
+    text = text.replace("\r\n", "\n")
+    text = text.replace("\r", "\n")
+
+    # Remove leading/trailing spaces from each line
+    lines = [line.strip() for line in text.split("\n")]
+
+    # Remove empty lines at beginning/end
+    while lines and lines[0] == "":
+        lines.pop(0)
+
+    while lines and lines[-1] == "":
+        lines.pop()
+
+    return "\n".join(lines)
+
+
 def execute_code(code, test_cases):
     results = []
 
@@ -19,12 +45,12 @@ def execute_code(code, test_cases):
         data = response.json()
 
         # User's program output
-        output = (data.get("stdout") or "").strip()
+        output = normalize_output(data.get("stdout"))
 
         # Expected output from database
-        expected = (test.expected_output or "").strip()
+        expected = normalize_output(test.expected_output)
 
-        # Compare output
+        # Compare normalized output
         passed = output == expected
 
         results.append({
